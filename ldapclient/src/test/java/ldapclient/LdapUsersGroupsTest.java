@@ -67,4 +67,21 @@ public class LdapUsersGroupsTest {
 		}
 	}
 
+	@Test
+	public void addContacts() {
+		try {
+			helper.addContact("contact1");
+			helper.addContact("contact2");
+			helper.addContact("contact3");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void search() {
+	}
+	
+	
+	
 }

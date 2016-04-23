@@ -37,13 +37,17 @@ public class LdapSearchByFilter {
 		env.put(Context.SECURITY_PRINCIPAL, "cn=admin,dc=lauerbach,dc=com");
 		env.put(Context.SECURITY_CREDENTIALS, "test");
 
+//		env.put(Context.SECURITY_PRINCIPAL, "uid=user1,ou=users,dc=lauerbach,dc=com");
+//		env.put(Context.SECURITY_CREDENTIALS, "user1");
+		
 		// Create the initial context
 		try {
 			DirContext ctx = new InitialDirContext(env);
 
 			SearchControls ctls = new SearchControls();
-			String filter = "(&(uid=user2)(mail=*))";
-			NamingEnumeration answer = ctx.search("dc=lauerbach,dc=com", filter, ctls);
+			// String filter = "(&(uid=user*)(mail=*))";
+			String filter = "(uid=user*)";
+			NamingEnumeration answer = ctx.search("ou=users,dc=lauerbach,dc=com", filter, ctls);
 
 			while (answer.hasMore()) {
 				SearchResult sr = (SearchResult) answer.next();

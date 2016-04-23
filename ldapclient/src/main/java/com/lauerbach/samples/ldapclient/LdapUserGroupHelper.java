@@ -71,7 +71,18 @@ public class LdapUserGroupHelper {
 				System.out.println(bd.getName() + ": " + bd.getObject());
 				groupsCtx.unbind( bd.getName());
 			}
-			groups.close();
+			groupsCtx.close();
+			
+			LdapContext contactsCtx = (LdapContext) ctx.lookup("ou=contacts,dc=lauerbach,dc=com");
+			System.out.println("Contacts:");
+			NamingEnumeration<Binding> contacts = ctx.listBindings("ou=contacts,dc=lauerbach,dc=com");
+			while (contacts.hasMore()) {
+				Binding bd = (Binding) contacts.next();
+				System.out.println(bd.getName() + ": " + bd.getObject());
+				contactsCtx.unbind( bd.getName());
+			}
+			contactsCtx.close();
+
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
@@ -125,4 +136,36 @@ public class LdapUserGroupHelper {
 
 	}
 
+	public void addContact(String name) throws NamingException {
+		LdapContext contactsCtx = (LdapContext) ctx.lookup("ou=contacts,dc=lauerbach,dc=com");
+
+		Attributes attrs = new BasicAttributes(true);
+		Attribute objclass = new BasicAttribute("objectClass");
+		objclass.add("person");
+		objclass.add("inetOrgPerson");
+		attrs.put(objclass);
+
+		// Person
+		attrs.put(new BasicAttribute("sn", "sn "+name));
+		attrs.put(new BasicAttribute("telephoneNumber", "0123 4567890"));
+		attrs.put(new BasicAttribute("description", "description"));
+		
+		// inetOrgPerson
+		attrs.put(new BasicAttribute("street", "street"));
+		attrs.put(new BasicAttribute("givenName", "given name"));
+		attrs.put(new BasicAttribute("homePhone", "home phone"));
+		attrs.put(new BasicAttribute("mobile", "mobile phone"));
+		attrs.put(new BasicAttribute("pager", "pager"));
+		attrs.put(new BasicAttribute("mail", "maildomain"));
+		
+		// extra
+
+		Context neu = contactsCtx.createSubcontext("cn=" + name, attrs);
+
+		neu.close();
+		contactsCtx.close();
+
+	}
+
+	
 }
