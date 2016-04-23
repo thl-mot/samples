@@ -5,7 +5,6 @@
 
 cn=admin,dc=lauerbach,dc=com
 
-
 ##Sources and Help
 
 https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-a-basic-ldap-server-on-an-ubuntu-12-04-vps
