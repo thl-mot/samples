@@ -25,24 +25,20 @@ import javax.naming.directory.InitialDirContext;
 public class SimpleConnect {
 
 	public static void main(String[] args) {
-		Hashtable<String,String> env = new Hashtable<String,String>();
-		env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-		env.put(Context.PROVIDER_URL, "ldap://192.168.1.200:389");
-
-		// Authenticate as S. User and password "mysecret"
-		env.put(Context.SECURITY_AUTHENTICATION, "simple");
-		env.put(Context.SECURITY_PRINCIPAL, "cn=admin,dc=lauerbach,dc=com");
-		env.put(Context.SECURITY_CREDENTIALS, "test");
-
-		// Create the initial context
 		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+			env.put(Context.PROVIDER_URL, "ldap://192.168.1.200:389");
+
+			// Authenticate as S. User and password "mysecret"
+			env.put(Context.SECURITY_AUTHENTICATION, "simple");
+			env.put(Context.SECURITY_PRINCIPAL, "cn=admin,dc=lauerbach,dc=com");
+			env.put(Context.SECURITY_CREDENTIALS, "test");
+
 			DirContext ctx = new InitialDirContext(env);
-			
-			
 			
 			ctx.close();
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

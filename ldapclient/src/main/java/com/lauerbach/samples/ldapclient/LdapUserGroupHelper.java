@@ -32,6 +32,9 @@ import javax.naming.directory.ModificationItem;
 import javax.naming.ldap.LdapContext;
 
 public class LdapUserGroupHelper {
+	public static final String LDAP_USER= "cn=admin,dc=lauerbach,dc=com";
+	public static final String LDAP_PASSWORD= "test";
+	
 	DirContext ctx;
 
 	public LdapUserGroupHelper() throws NamingException {
@@ -41,8 +44,8 @@ public class LdapUserGroupHelper {
 
 		// Authenticate as S. User and password "mysecret"
 		env.put(Context.SECURITY_AUTHENTICATION, "simple");
-		env.put(Context.SECURITY_PRINCIPAL, "cn=admin,dc=lauerbach,dc=com");
-		env.put(Context.SECURITY_CREDENTIALS, "test");
+		env.put(Context.SECURITY_PRINCIPAL, LDAP_USER);
+		env.put(Context.SECURITY_CREDENTIALS, LDAP_PASSWORD);
 
 		ctx = new InitialDirContext(env);
 	}
@@ -167,5 +170,10 @@ public class LdapUserGroupHelper {
 
 	}
 
+	public DirContext getContext() {
+		return ctx;
+	}
+
+	
 	
 }
