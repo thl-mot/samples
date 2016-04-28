@@ -15,41 +15,36 @@ package com.lauerbach.samples.ldapclient;
  *  limitations under the License.
  */
 
-import java.util.Hashtable;
-
-import javax.naming.Context;
 import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttribute;
-import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
-public class LdapSearchByAttributes {
+public class LdapRecursivSearch {
 
 	public static void main(String[] args) {
 		try {
 			LdapUserGroupHelper helper= new LdapUserGroupHelper();
 			DirContext ctx = helper.getContext();
 			
-			Attributes matchAttrs = new BasicAttributes(true); 
-			matchAttrs.put(new BasicAttribute("uid", "user1"));
+			SearchControls controls = new SearchControls();
+	        controls.setSearchScope( SearchControls.SUBTREE_SCOPE);
 			
-			NamingEnumeration answer = ctx.search("ou=users,dc=lauerbach,dc=com", matchAttrs);
+			String filter = "(uid=user*)";
+
+	        NamingEnumeration<?> answer = ctx.search("dc=lauerbach,dc=com", filter, controls);
 
 			while (answer.hasMore()) {
-			    SearchResult sr = (SearchResult)answer.next();
-			    System.out.println(">>>" + sr.getName());
-			    System.out.println("  uid:"+sr.getAttributes().get("uid"));
-			    System.out.println("  dn:"+sr.getNameInNamespace());
+				SearchResult sr = (SearchResult) answer.next();
+				System.out.println(">>>" + sr.getName());
+				System.out.println("  uid:" + sr.getAttributes().get("uid").get(0));
+				System.out.println("  dn:" + sr.getNameInNamespace());
 			}
 			
 			ctx.close();
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}
+		catch( Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 

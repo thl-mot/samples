@@ -29,6 +29,7 @@ import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.ModificationItem;
+import javax.naming.directory.SearchResult;
 import javax.naming.ldap.LdapContext;
 
 public class LdapUserGroupHelper {
@@ -110,8 +111,8 @@ public class LdapUserGroupHelper {
 	public void addUser2Group( String uid, String groupName) throws NamingException {
 		ModificationItem[] mods = new ModificationItem[1];
 		mods[0] = new ModificationItem(DirContext.ADD_ATTRIBUTE,
-			    new BasicAttribute("member", "uid="+uid));
-		ctx.modifyAttributes("cn="+groupName+",ou=groups,dc=lauerbach,dc=com", mods);
+			    new BasicAttribute("member", "uid="+uid+",ou=users,dc=lauerbach,dc=com"));
+		ctx.modifyAttributes( "cn="+groupName+",ou=groups,dc=lauerbach,dc=com", mods);
 	}
 	
 	private byte[] encodePassword(String pass) throws UnsupportedEncodingException {
@@ -169,6 +170,7 @@ public class LdapUserGroupHelper {
 		contactsCtx.close();
 
 	}
+	
 
 	public DirContext getContext() {
 		return ctx;

@@ -15,40 +15,41 @@ package com.lauerbach.samples.ldapclient;
  *  limitations under the License.
  */
 
-import java.util.Hashtable;
-
-import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttribute;
-import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
-public class LdapSearchByAttributes {
+public class LdapSearchGroupsByMember {
 
+	/**
+	 * This example searches recursively all groups that have the member named by
+	 * "uid=user5,ou=users,dc=lauerbach,dc=com"
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		try {
-			LdapUserGroupHelper helper= new LdapUserGroupHelper();
+			LdapUserGroupHelper helper = new LdapUserGroupHelper();
 			DirContext ctx = helper.getContext();
-			
-			Attributes matchAttrs = new BasicAttributes(true); 
-			matchAttrs.put(new BasicAttribute("uid", "user1"));
-			
-			NamingEnumeration answer = ctx.search("ou=users,dc=lauerbach,dc=com", matchAttrs);
+
+			SearchControls ctls = new SearchControls();
+			ctls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+
+			String filter = "(member=uid=user5,ou=users,dc=lauerbach,dc=com)";
+
+			NamingEnumeration<?> answer = ctx.search("dc=lauerbach,dc=com", filter, ctls);
 
 			while (answer.hasMore()) {
-			    SearchResult sr = (SearchResult)answer.next();
-			    System.out.println(">>>" + sr.getName());
-			    System.out.println("  uid:"+sr.getAttributes().get("uid"));
-			    System.out.println("  dn:"+sr.getNameInNamespace());
+				SearchResult sr = (SearchResult) answer.next();
+				System.out.println(">>>" + sr.getName());
+				System.out.println("  cn:" + sr.getAttributes().get("cn").get(0));
+				System.out.println("  dn:" + sr.getNameInNamespace());
 			}
-			
+
 			ctx.close();
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -27,12 +27,11 @@ import com.lauerbach.samples.ldapclient.LdapUserGroupHelper;
 
 public class LdapUsersGroupsTest {
 
-	
-	private static LdapUserGroupHelper helper= null;
+	private static LdapUserGroupHelper helper = null;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		helper= new LdapUserGroupHelper();
+		helper = new LdapUserGroupHelper();
 		helper.clearUsersAndGroups();
 	}
 
@@ -79,9 +78,19 @@ public class LdapUsersGroupsTest {
 	}
 
 	@Test
-	public void search() {
+	public void addUser2Group() {
+		try {
+			helper.addUser2Group("user1", "group1");
+			
+			helper.addUser2Group("user2", "group2");
+			helper.addUser2Group("user3", "group2");
+			helper.addUser2Group("user5", "group2");
+			
+			helper.addUser2Group("user4", "group3");
+			helper.addUser2Group("user5", "group3");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
-	
-	
+
 }
