@@ -24,8 +24,15 @@ import javax.naming.directory.SearchResult;
 public class LdapSearchGroupsByMember {
 
 	/**
-	 * This example searches recursively all groups that have the member named by
-	 * "uid=user5,ou=users,dc=lauerbach,dc=com"
+	 * This example searches recursively all groups that have the member named
+	 * by "uid=user5,ou=users,dc=lauerbach,dc=com"
+	 * 
+	 * This example might be more useful the other way arround, if you search
+	 * all users that are member of a group. In this case the user needs one or
+	 * more attributes "memberOf" to hold the dn of a group.
+	 * 
+	 * On LDAP it is not possible to use a wild card search like give me all
+	 * members that have a user name like "user*"
 	 * 
 	 * @param args
 	 */
