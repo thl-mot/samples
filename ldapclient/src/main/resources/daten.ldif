@@ -1,0 +1,90 @@
+version: 1
+dn: dc=lauerbach,dc=com
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+dc: lauerbach
+o: Lauerbach
+
+dn: cn=admin,dc=lauerbach,dc=com
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: admin
+description: LDAP administrator
+userPassword:: e1NIQX1xVXFQNWN5eG02WWNUQWh6MDVIcGg1Z3Z1OU09
+
+dn: ou=groups,dc=lauerbach,dc=com
+objectClass: organizationalUnit
+ou: groups
+
+dn: cn=group1,ou=groups,dc=lauerbach,dc=com
+objectClass: groupOfNames
+cn: group1
+member: 
+member: uid=user1,ou=users,dc=lauerbach,dc=com
+
+dn: cn=group2,ou=groups,dc=lauerbach,dc=com
+objectClass: groupOfNames
+cn: group2
+member: 
+member: uid=user2,ou=users,dc=lauerbach,dc=com
+member: uid=user3,ou=users,dc=lauerbach,dc=com
+member: uid=user5,ou=users,dc=lauerbach,dc=com
+
+dn: cn=group3,ou=groups,dc=lauerbach,dc=com
+objectClass: groupOfNames
+cn: group3
+member: 
+member: uid=user4,ou=users,dc=lauerbach,dc=com
+member: uid=user5,ou=users,dc=lauerbach,dc=com
+
+dn: ou=users,dc=lauerbach,dc=com
+objectClass: organizationalUnit
+ou: users
+
+dn: ou=contacts,dc=lauerbach,dc=com
+objectClass: organizationalUnit
+ou: contacts
+
+dn: cn=contact1,ou=contacts,dc=lauerbach,dc=com
+objectClass: person
+objectClass: inetOrgPerson
+cn: contact1
+description: description
+givenName: given name
+homePhone: home phone
+mail: maildomain
+mobile: mobile phone
+pager: pager
+sn: sn contact1
+street: street
+telephoneNumber: 0123 4567890
+
+dn: cn=contact2,ou=contacts,dc=lauerbach,dc=com
+objectClass: person
+objectClass: inetOrgPerson
+cn: contact2
+description: description
+givenName: given name
+homePhone: home phone
+mail: maildomain
+mobile: mobile phone
+pager: pager
+sn: sn contact2
+street: street
+telephoneNumber: 0123 4567890
+
+dn: cn=contact3,ou=contacts,dc=lauerbach,dc=com
+objectClass: person
+objectClass: inetOrgPerson
+cn: contact3
+description: description
+givenName: given name
+homePhone: home phone
+mail: maildomain
+mobile: mobile phone
+pager: pager
+sn: sn contact3
+street: street
+telephoneNumber: 0123 4567890
+
