@@ -16,6 +16,7 @@ public class Play {
 		
 		try {
 			SourceDataLine source= AudioSystem.getSourceDataLine( format);
+			System.out.println("Output to: "+source.toString());
 			source.open( format);
 			source.start();
 			
