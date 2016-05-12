@@ -22,11 +22,9 @@ import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.TargetDataLine;
 
-public class PlaySpecific {
-	static final int SAMPLE_RATE = 44100;
-	static final double HZ = 440;
-	static final double VOL = 100;
+public class PlayFromMic {
 
 	public static Line findSource(String name) {
 		Mixer.Info[] mixerInfos = AudioSystem.getMixerInfo();
@@ -60,36 +58,35 @@ public class PlaySpecific {
 		}
 		return null;
 	}
-
+	
+	static final int SAMPLE_RATE= 8000;
+	
 	public static void main(String[] args) {
-		AudioFormat format = new AudioFormat(SAMPLE_RATE, 8, 2, true, false);
-
+		AudioFormat format = new AudioFormat( SAMPLE_RATE, 8, 1, true, false);
+		
 		SourceDataLine line = (SourceDataLine) findSource("Device [plughw:1,0]");
+		
 		try {
+			TargetDataLine mic= AudioSystem.getTargetDataLine(format);
+			mic.open(format);
+			mic.start();
 			
 			line.open(format);
 			line.start();
 
-			System.out.println("Output to: " + line.toString());
-			System.out.println("  Format: " + line.getFormat().toString());
+			byte[] buf = new byte[1];
+			long count=1;
+			while (count>0) {
+				int i = mic.read(buf, 0, buf.length);
+				System.out.println( i);
+				line.write(buf, 0, i);
+			}
 			
-			byte[] buf = new byte[2];
-			for (int i = 0; i < SAMPLE_RATE; i++) {
-				double angle = i / (SAMPLE_RATE / (double)(440*2)) * 2.0 * Math.PI;
-				buf[0] = (byte) (Math.sin(angle) * 127.0);
-				buf[1] = (byte) (Math.sin(angle) * 127.0);
-				line.write(buf, 0, buf.length);
-			}
-			line.flush();
-			for (int i = 0; i < SAMPLE_RATE; i++) {
-				double angle = i / (SAMPLE_RATE / (double)440) * 2.0 * Math.PI;
-				buf[0] = (byte) (Math.sin(angle) * 127.0);
-				buf[1] = (byte) (Math.sin(angle) * 127.0);
-				line.write(buf, 0, buf.length);
-			}
 			line.flush();
 			line.stop();
 			line.close();
+			mic.stop();
+			mic.close();
 
 		} catch (LineUnavailableException e) {
 			e.printStackTrace();
