@@ -19,6 +19,8 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.Line;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
@@ -70,19 +72,21 @@ public class PlayFromMic {
 			TargetDataLine mic= AudioSystem.getTargetDataLine(format);
 			mic.open(format);
 			mic.start();
+			int bufferSize = mic.getBufferSize();
 			
 			line.open(format);
 			line.start();
 
-			byte[] buf = new byte[1];
+			System.out.println( "Mic Buffersize: "+mic.getBufferSize());
+			System.out.println( "Speaker Buffersize: "+mic.getBufferSize());
+
+			byte[] buf = new byte[10];
 			long count=1;
 			while (count>0) {
 				int i = mic.read(buf, 0, buf.length);
-				System.out.println( i);
 				line.write(buf, 0, i);
 			}
 			
-			line.flush();
 			line.stop();
 			line.close();
 			mic.stop();
